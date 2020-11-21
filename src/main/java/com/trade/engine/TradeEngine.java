@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class TradeEngine {
 //		todo: Get list of validated orders, published by the order validated.
         try {
 //            Jedis object for connecting to the redis-server
-            jedis = new Jedis("localhost", PORT);
+            jedis = getConnection(PORT);
 
 //            creating JedisPubSub object for subscribing to channels
             JedisPubSub jedisPubSub = new JedisPubSub() {
@@ -193,9 +195,24 @@ public class TradeEngine {
     }
 
     static void pushDataToQueue(List order) {
-        Jedis jedis = new Jedis("localhost", 9090);
+        Jedis jedis = null;
+        try {
+            jedis = getConnection(9090);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         jedis.rpush("makeOrder", Base64.getEncoder().encodeToString(ObjectSerializer.serialize(order)));
         System.out.println("List pushed to makeOrder queue");
+    }
+
+    private static Jedis getConnection(int port) throws URISyntaxException {
+        URI redisURI = null;
+        if(System.getenv("REDIS_URL") != null){
+            redisURI = new URI(System.getenv("REDIS_URL"));
+        }else{
+            redisURI = new URI("localhost:" + port);
+        }
+        return (new Jedis(redisURI));
     }
 
 }
