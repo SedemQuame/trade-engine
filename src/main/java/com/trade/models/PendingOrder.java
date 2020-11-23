@@ -1,4 +1,4 @@
-package com.trade.engine;
+package com.trade.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

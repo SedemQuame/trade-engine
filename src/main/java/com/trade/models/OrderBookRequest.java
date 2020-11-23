@@ -1,4 +1,4 @@
-package com.trade.engine;
+package com.trade.models;
 
 public class OrderBookRequest {
     public String id;
