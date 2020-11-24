@@ -58,4 +58,15 @@ public @Data class PartialOrder {
     public void setSide(String side) {
         this.side = side;
     }
+
+    @Override
+    public String toString() {
+        return "PartialOrder{" +
+                "orderId='" + orderId + '\'' +
+                ", ticker='" + ticker + '\'' +
+                ", price=" + price +
+                ", quantity='" + quantity + '\'' +
+                ", side='" + side + '\'' +
+                '}';
+    }
 }

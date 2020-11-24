@@ -13,4 +13,13 @@ public class OrderBookRequest {
         this.product = product;
         this.side = side;
     }
+
+    @Override
+    public String toString() {
+        return "OrderBookRequest{" +
+                "id='" + id + '\'' +
+                ", product='" + product + '\'' +
+                ", side='" + side + '\'' +
+                '}';
+    }
 }
