@@ -1,9 +1,7 @@
 package com.trade.models;
 
-import com.sun.tools.javac.comp.Todo;
 import com.trade.utility.JedisConnection;
 import com.trade.utility.ObjectSerializer;
-import com.trade.utility.Utility;
 import redis.clients.jedis.Jedis;
 
 import java.net.URISyntaxException;
