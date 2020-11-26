@@ -1,6 +1,9 @@
 package com.trade.models;
 
-public class OrderBookRequest {
+import java.io.Serializable;
+
+public class OrderBookRequest implements Serializable {
+    private static final long serialVersionUID = 2228145111069333864L;
     public String id;
     public String product;
     public String side;

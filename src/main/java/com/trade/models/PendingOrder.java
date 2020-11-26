@@ -1,9 +1,9 @@
 package com.trade.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class PendingOrder {
+public class PendingOrder implements Serializable {
+    private static final long serialVersionUID = 2228145111069333864L;
     public String product;
     public int quantity;
     public double price;

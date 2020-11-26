@@ -3,17 +3,19 @@ package com.trade.models;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import java.io.Serializable;
 
-public @Data class PartialOrder {
+public @Data class PartialOrder implements Serializable {
+    private static final long serialVersionUID = 2228145111069333864L;
     private @Getter @Setter String orderId;
-    private @Getter @Setter String ticker;
+    private @Getter @Setter String product;
     private @Getter @Setter Double price;
     private @Getter @Setter String quantity;
     private @Getter @Setter String side;
 
-    public PartialOrder(String orderId, String ticker, Double price, String quantity, String side) {
+    public PartialOrder(String orderId, String product, Double price, String quantity, String side) {
         this.orderId = orderId;
-        this.ticker = ticker;
+        this.product = product;
         this.price = price;
         this.quantity = quantity;
         this.side = side;
@@ -27,12 +29,12 @@ public @Data class PartialOrder {
         this.orderId = orderId;
     }
 
-    public String getTicker() {
-        return ticker;
+    public String getProduct() {
+        return product;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
     public Double getPrice() {
@@ -63,7 +65,7 @@ public @Data class PartialOrder {
     public String toString() {
         return "PartialOrder{" +
                 "orderId='" + orderId + '\'' +
-                ", ticker='" + ticker + '\'' +
+                ", ticker='" + product + '\'' +
                 ", price=" + price +
                 ", quantity='" + quantity + '\'' +
                 ", side='" + side + '\'' +

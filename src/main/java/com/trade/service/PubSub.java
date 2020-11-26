@@ -5,16 +5,14 @@ import com.trade.utility.JedisConnection;
 import com.trade.utility.ObjectSerializer;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
-
 import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.List;
 
-public class PubSub implements Runnable{
+public class PubSub implements Runnable {
     private Jedis jedis = null;
     @Override
     public void run() {
-//        todo: Get list of validated orders, published by the order validated.
         try {
 //            Jedis object for connecting to the redis-server
             jedis = (new JedisConnection()).getConnection();
@@ -23,23 +21,16 @@ public class PubSub implements Runnable{
             JedisPubSub jedisPubSub = new JedisPubSub() {
                 @Override
                 public void onMessage(String channel, String message) {
-                    System.out.println("\nPrinting published message.");
-                    System.out.println(message + "\n");
-                    List<Order> validatedOrders = (List) ObjectSerializer.unserizlize(Base64.getDecoder().decode(message.getBytes()));
-
-                    assert validatedOrders != null;
-                    // TODO: 11/24/20 Remove the code below doesn't do anything solid.
-                    validatedOrders.forEach(validatedOrder -> {
-                        System.out.println(validatedOrder.toString());
-                        pushDataToQueue(validatedOrder);
-                    });
+                List<Order> validatedOrders = (List) ObjectSerializer.unserizlize(Base64.getDecoder().decode(message.getBytes()));
+                assert validatedOrders != null;
+                validatedOrders.forEach(validatedOrder -> {
+                    pushDataToQueue(validatedOrder);
+                });
                 }
             };
-
-
-
             while (true) {
-                jedis.subscribe(jedisPubSub, "C1");
+                String ORDER_TO_TRADE_ENGINE_CHANNEL = "C1";
+                jedis.subscribe(jedisPubSub, ORDER_TO_TRADE_ENGINE_CHANNEL);
             }
         } catch (Exception e) {
             System.out.println("Exception message is: " + e.getMessage());
@@ -57,6 +48,5 @@ public class PubSub implements Runnable{
             e.printStackTrace();
         }
         jedis.lpush("makeOrder", Base64.getEncoder().encodeToString(ObjectSerializer.serialize(order)));
-        System.out.println("List pushed to makeOrder queue");
     }
 }
